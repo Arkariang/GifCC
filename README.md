@@ -1,2 +1,2 @@
 # GifSearch
-GifSearch
+[a relative link](demo.gif)
