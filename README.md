@@ -27,7 +27,7 @@ Dependencies:
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 ```
 
-Things to improve
+### Things to improve
 - Dagger, No dependency injection in this Coding Challenge, I would´ve added it for testing
 - First thing layout, it´s using a simple linear layout so the look & feel is quite awful. In case of having more time I´ll implement a layout like Telegram.
 - Pagination for the query, it wasn´t a requirement but it would have been nice doing that part.
