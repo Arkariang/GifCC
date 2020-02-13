@@ -18,7 +18,7 @@ class SearchGifViewModel {
             .subscribe ( {
                 requestWith(it)
             }, {
-                // TODO: send to the view with error code and description for UI error handling
+                // TODO: emmit something to the view with error code and description for UI error handling
                 println("something went wrong")
             }).also {
                 composeDisposable.add(it)
@@ -33,7 +33,7 @@ class SearchGifViewModel {
             .subscribe({
                 searchModel.populateFromRequest(it.data)
             }, {
-                // TODO: send to the view with error code and description for UI error handling
+                // TODO:  emmit something to the view with error code and description for UI error handling
                 println("something went wrong")
             }).also {
                 composeDisposable.add(it)

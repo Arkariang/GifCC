@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     data = it
+                }.also {
+                    composeDisposable.add(it)
                 }
         }
         recycler_view.layoutManager = LinearLayoutManager(this)
