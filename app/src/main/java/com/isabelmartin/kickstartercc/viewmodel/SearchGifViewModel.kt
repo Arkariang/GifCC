@@ -2,6 +2,7 @@ package com.isabelmartin.kickstartercc.viewmodel
 
 import com.isabelmartin.kickstartercc.models.SearchDataModel
 import com.isabelmartin.kickstartercc.repository.RemoteRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -10,6 +11,7 @@ class SearchGifViewModel {
 
     private var searchModel: SearchDataModel = SearchDataModel()
     private val composeDisposable: CompositeDisposable = CompositeDisposable()
+    var repository = RemoteRepository().provideAPI()
 
     init {
         searchModel.textToSearch
@@ -25,11 +27,11 @@ class SearchGifViewModel {
             }
     }
 
-    private fun requestWith(query: String) {
-        RemoteRepository()
-            .provideAPI()
-            .searchGifs(q = query)
-            .observeOn(Schedulers.io())
+    private fun requestWith(query: String, page: Int = 0) {
+            // todo: set loading mode
+            repository
+            .searchGifs(q = query, offset = page)
+            .subscribeOn(Schedulers.io())
             .subscribe({
                 searchModel.populateFromRequest(it.data)
             }, {
@@ -38,6 +40,12 @@ class SearchGifViewModel {
             }).also {
                 composeDisposable.add(it)
             }
+    }
+
+    fun nextPage(loadPage: Int) {
+        if (searchModel.textToSearch.hasValue()) {
+            requestWith(searchModel.textToSearch?.value.orEmpty(), loadPage)
+        }
     }
 
     fun getGiftsList() = searchModel.gifList

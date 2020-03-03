@@ -28,7 +28,7 @@ data class Images(
 )
 
 data class GifPojo(
-    @SerializedName("url") var gif_url: String?,
-    @SerializedName("width") var width: String?,
-    @SerializedName("height") var height: String?
+    @SerializedName("url") var gif_url: String? = "",
+    @SerializedName("width") var width: String? = "",
+    @SerializedName("height") var height: String? = ""
 )

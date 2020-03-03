@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.isabelmartin.kickstartercc.R
 import com.isabelmartin.kickstartercc.models.GifDetailModel
 import com.isabelmartin.kickstartercc.viewmodel.SearchGifViewModel
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +41,11 @@ class MainActivity : AppCompatActivity() {
                 }
         }
         recycler_view.layoutManager = LinearLayoutManager(this)
+        recycler_view.addOnScrollListener(object: PaginationListener(recycler_view.layoutManager as LinearLayoutManager) {
+            override fun nextPage(loadPage: Int) {
+                searchViewModel.nextPage(loadPage)
+            }
+        })
     }
 
     override fun onDestroy() {

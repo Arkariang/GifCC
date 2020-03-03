@@ -1,10 +1,12 @@
 package com.isabelmartin.kickstartercc.ui
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.isabelmartin.kickstartercc.R
@@ -35,11 +37,9 @@ class RecyclerAdapter : RecyclerView.Adapter<ViewHolder>() {
 
 class ViewHolder(
     item: View,
-    context: Context,
-    viewActionListener: ViewActionListener?
+    private val context: Context,
+    private val viewActionListener: ViewActionListener?
 ) : RecyclerView.ViewHolder(item) {
-    private val context = context
-    private val viewActionListener = viewActionListener
 
     fun bind(gifModel: GifDetailModel) {
         itemView.setOnClickListener {
@@ -59,6 +59,27 @@ class ViewHolder(
     companion object {
         const val ACTION_CLICK = 1
     }
+}
+
+abstract class PaginationListener(
+    private val layoutManager: LinearLayoutManager) :
+    RecyclerView.OnScrollListener() {
+
+    private var pageCounter = 0
+
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+        val totalItemCount = layoutManager.itemCount
+        val lastVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+
+        if (lastVisibleItemPosition == totalItemCount -1) {
+            nextPage(pageCounter++)
+        } else {
+            Log.i("","")
+        }
+    }
+
+    protected abstract fun nextPage(loadPage: Int)
 }
 
 /**
