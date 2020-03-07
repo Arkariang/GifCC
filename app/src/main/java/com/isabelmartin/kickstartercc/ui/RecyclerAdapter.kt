@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.isabelmartin.kickstartercc.R
@@ -58,6 +59,30 @@ class ViewHolder(
 
     companion object {
         const val ACTION_CLICK = 1
+    }
+}
+
+abstract class PageingListener(private val layoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
+
+    protected abstract fun loadMoreItems(pageNumber: Int)
+
+    private var pageNumber: Int = 0
+
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+        val visibleItemCount = layoutManager.childCount
+        val totalItemCount = layoutManager.itemCount
+        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+            && firstVisibleItemPosition >= 0
+        ) {
+            loadMoreItems(pageNumber++)
+        }
+    }
+
+    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+        super.onScrollStateChanged(recyclerView, newState)
     }
 }
 

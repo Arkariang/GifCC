@@ -39,6 +39,13 @@ class MainActivity : AppCompatActivity() {
                 }
         }
         recycler_view.layoutManager = LinearLayoutManager(this)
+
+        recycler_view.addOnScrollListener(object: PageingListener(recycler_view.layoutManager as LinearLayoutManager) {
+            override fun loadMoreItems(pageNumber: Int) {
+                searchViewModel.netPage(pageNumber)
+            }
+
+        })
     }
 
     override fun onDestroy() {

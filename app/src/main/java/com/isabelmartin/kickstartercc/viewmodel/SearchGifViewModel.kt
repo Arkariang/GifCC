@@ -25,11 +25,11 @@ class SearchGifViewModel {
             }
     }
 
-    private fun requestWith(query: String) {
+    private fun requestWith(query: String, page: Int = 0) {
         RemoteRepository()
             .provideAPI()
-            .searchGifs(q = query)
-            .observeOn(Schedulers.io())
+            .searchGifs(q = query, offset = page)
+            .subscribeOn(Schedulers.io())
             .subscribe({
                 searchModel.populateFromRequest(it.data)
             }, {
@@ -45,4 +45,8 @@ class SearchGifViewModel {
     fun search(query: String) = searchModel.searchText(query)
 
     fun dispose() = composeDisposable.dispose()
+
+    fun netPage(page: Int) {
+        requestWith(searchModel.textToSearch.let { it.value }?: "", page)
+    }
 }
